@@ -1,0 +1,20 @@
+package org.sparky.sparkyai.company.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class UpdateCompanyDto {
+
+    @NotNull
+    @NotBlank
+    private String name;
+
+    @NotNull
+    @NotBlank
+    private String ruc;
+
+    @NotNull
+    private Long mainAdminId;
+}
