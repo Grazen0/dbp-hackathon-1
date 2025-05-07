@@ -3,6 +3,7 @@ package org.sparky.sparkyai.user.infrastructure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,15 @@ public class UserRepositoryTest extends ContainerTestBase {
 
     private Company company1;
     private Company company2;
+    private User admin1;
+    private User admin2;
+    private User user1;
+    private User user2;
+    private User user3;
 
     @BeforeEach
     public void setup() {
-        User admin1 = new User();
+        admin1 = new User();
         admin1.setUsername("admin1");
         admin1.setPassword("123456");
         admin1.setRole(Role.COMPANY_ADMIN);
@@ -43,7 +49,7 @@ public class UserRepositoryTest extends ContainerTestBase {
         company1.setAdmin(admin1);
         entityManager.persist(company1);
 
-        User admin2 = new User();
+        admin2 = new User();
         admin2.setUsername("admin2");
         admin2.setPassword("123456");
         admin2.setRole(Role.COMPANY_ADMIN);
@@ -55,21 +61,81 @@ public class UserRepositoryTest extends ContainerTestBase {
         company2.setAdmin(admin2);
         entityManager.persist(company2);
 
+        user1 = new User();
+        user1.setUsername("john");
+        user1.setPassword("123456");
+        user1.setRole(Role.USER);
+        user1.setCompany(company1);
+        userRepository.save(user1);
+
+        user2 = new User();
+        user2.setUsername("juan");
+        user2.setPassword("123456");
+        user2.setRole(Role.USER);
+        user2.setCompany(company1);
+        userRepository.save(user2);
+
+        user3 = new User();
+        user3.setUsername("pepe");
+        user3.setPassword("123456");
+        user3.setRole(Role.USER);
+        user3.setCompany(company2);
+        userRepository.save(user3);
+
         entityManager.flush();
     }
 
     @Test
     public void testFindByUsername() {
-        Optional<User> result1 = userRepository.findByUsername("admin1");
-        Optional<User> result2 = userRepository.findByUsername("admin2");
-        Optional<User> result3 = userRepository.findByUsername("juan");
+        Optional<User> result1 = userRepository.findByUsername(admin1.getUsername());
+        Optional<User> result2 = userRepository.findByUsername(admin2.getUsername());
+        Optional<User> result3 = userRepository.findByUsername(user1.getUsername());
+        Optional<User> result4 = userRepository.findByUsername(user2.getUsername());
+        Optional<User> result5 = userRepository.findByUsername(user3.getUsername());
+        Optional<User> result6 = userRepository.findByUsername("carlos");
+        Optional<User> result7 = userRepository.findByUsername("");
 
         assertTrue(result1.isPresent());
         assertTrue(result2.isPresent());
-        assertTrue(result3.isEmpty());
+        assertTrue(result3.isPresent());
+        assertTrue(result4.isPresent());
+        assertTrue(result5.isPresent());
+        assertTrue(result6.isEmpty());
+        assertTrue(result7.isEmpty());
 
-        assertEquals(result1.get().getUsername(), "admin1");
-        assertEquals(result2.get().getUsername(), "admin2");
+        assertEquals(result1.get().getUsername(), admin1.getUsername());
+        assertEquals(result2.get().getUsername(), admin2.getUsername());
+        assertEquals(result3.get().getUsername(), user1.getUsername());
+        assertEquals(result4.get().getUsername(), user2.getUsername());
+        assertEquals(result5.get().getUsername(), user3.getUsername());
+    }
+
+    @Test
+    public void testFindByIdAndCompanyId() {
+        Optional<User> result1 = userRepository.findByIdAndCompanyId(user1.getId(), company1.getId());
+        Optional<User> result2 = userRepository.findByIdAndCompanyId(user2.getId(), company1.getId());
+        Optional<User> result3 = userRepository.findByIdAndCompanyId(user3.getId(), company2.getId());
+        Optional<User> result4 = userRepository.findByIdAndCompanyId(user1.getId(), company2.getId());
+        Optional<User> result5 = userRepository.findByIdAndCompanyId(user3.getId(), company1.getId());
+
+        assertTrue(result1.isPresent());
+        assertTrue(result2.isPresent());
+        assertTrue(result3.isPresent());
+        assertTrue(result4.isEmpty());
+        assertTrue(result5.isEmpty());
+
+        assertEquals(result1.get().getUsername(), user1.getUsername());
+        assertEquals(result2.get().getUsername(), user2.getUsername());
+        assertEquals(result3.get().getUsername(), user3.getUsername());
+    }
+
+    @Test
+    void testFindByCompanyId() {
+        List<User> result1 = userRepository.findByCompanyId(company1.getId());
+        List<User> result2 = userRepository.findByCompanyId(company2.getId());
+
+        assertEquals(result1.size(), 2);
+        assertEquals(result2.size(), 1);
     }
 
 }
