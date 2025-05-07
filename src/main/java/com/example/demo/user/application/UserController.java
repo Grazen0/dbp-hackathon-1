@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/company/users")
-@PreAuthorize("has_role('ROLE_COMPANY_ADMIN')")
+@PreAuthorize("hasRole('ROLE_COMPANY_ADMIN')")
 @RequiredArgsConstructor
 public class UserController {
 
