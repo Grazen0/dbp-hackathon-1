@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private Role role = Role.USER;
+    private Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = true)

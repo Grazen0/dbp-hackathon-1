@@ -2,6 +2,7 @@ package org.sparky.sparkyai.jwt.domain;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +58,12 @@ public class JwtService {
     }
 
     public void validateToken(String jwt, String username) {
-        User user = userService.getUserByUsername(username);
+        Optional<User> userOptional = userService.getUserByUsernameOptional(username);
+        if (userOptional.isEmpty()) {
+            return;
+        }
+
+        User user = userOptional.get();
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         var authToken = new UsernamePasswordAuthenticationToken(user, jwt, user.getAuthorities());
 

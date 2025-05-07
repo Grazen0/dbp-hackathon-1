@@ -2,6 +2,7 @@ package org.sparky.sparkyai.user.domain;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.sparky.sparkyai.user.dto.CreateUserDto;
 import org.sparky.sparkyai.user.dto.UpdateUserDto;
@@ -37,6 +38,10 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
+    public Optional<User> getUserByUsernameOptional(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public User getUserByIdAndCompanyId(Long id, Long companyId) {
         return userRepository.findByIdAndCompanyId(id, companyId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -59,6 +64,10 @@ public class UserService {
     }
 
     public User createAdminUser(CreateUserDto userDto) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new ResourceConflictException("User with username already exists");
+        }
+
         User user = modelMapper.map(userDto, User.class);
         user.setRole(Role.COMPANY_ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -66,6 +75,10 @@ public class UserService {
     }
 
     public User createSparkyAdminUser(CreateUserDto userDto) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new ResourceConflictException("User with username already exists");
+        }
+
         User user = modelMapper.map(userDto, User.class);
         user.setRole(Role.SPARKY_ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
