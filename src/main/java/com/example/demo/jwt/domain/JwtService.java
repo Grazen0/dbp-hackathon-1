@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.common.exception.UnauthorizedException;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserService;
 
