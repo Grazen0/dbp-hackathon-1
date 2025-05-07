@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -42,8 +43,11 @@ public class User implements UserDetails {
     private Role role = Role.USER;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Company company;
+
+    @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
+    private Company ownedCompany;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Limit> limits;
