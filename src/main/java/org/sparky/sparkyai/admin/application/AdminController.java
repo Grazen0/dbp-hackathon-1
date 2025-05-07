@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.sparky.sparkyai.company.domain.Company;
 import org.sparky.sparkyai.company.domain.CompanyService;
+import org.sparky.sparkyai.company.dto.CompanyConsumptionDto;
 import org.sparky.sparkyai.company.dto.CompanyResponseDto;
 import org.sparky.sparkyai.company.dto.CreateCompanyWithAdminDto;
 import org.sparky.sparkyai.company.dto.UpdateCompanyDto;
@@ -60,8 +61,9 @@ public class AdminController {
     }
 
     @GetMapping("/companies/{id}/consumption")
-    public void getConsumptionReport(@PathVariable Long id) {
-        // TODO: martin o matias hola :D
+    public CompanyConsumptionDto getConsumptionReport(@PathVariable Long id) {
+        Company company = companyService.getCompanyById(id);
+        return companyService.getCompanyConsumption(company);
     }
 
 }

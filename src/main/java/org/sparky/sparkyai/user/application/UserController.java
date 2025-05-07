@@ -23,7 +23,9 @@ import org.sparky.sparkyai.user.domain.User;
 import org.sparky.sparkyai.user.domain.UserService;
 import org.sparky.sparkyai.user.dto.CreateUserDto;
 import org.sparky.sparkyai.user.dto.UpdateUserDto;
+import org.sparky.sparkyai.user.dto.UserConsumptionDto;
 import org.sparky.sparkyai.user.dto.UserResponseDto;
+import org.sparky.sparkyai.usercall.dto.UserCallResponseDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -82,10 +84,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}/consumption")
-    public void getUserConsumption(@PathVariable Long id, Authentication authentication) {
+    public UserConsumptionDto getUserConsumption(@PathVariable Long id, Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
         User user = userService.getUserByIdAndCompanyId(id, admin.getCompany().getId());
-        // TODO: implementar
+        return userService.getUserConsumption(user);
     }
 
 }

@@ -43,7 +43,7 @@ public class UserCall {
     private Boolean wasError;
 
     @Column(nullable = false)
-    private Long consumedTokens;
+    private Integer consumedTokens;
 
     @CreationTimestamp
     @Column(nullable = false)

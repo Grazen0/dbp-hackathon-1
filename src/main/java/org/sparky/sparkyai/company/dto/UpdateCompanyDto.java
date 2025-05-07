@@ -15,6 +15,4 @@ public class UpdateCompanyDto {
     @NotBlank
     private String ruc;
 
-    @NotNull
-    private Long mainAdminId;
 }

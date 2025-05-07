@@ -9,6 +9,7 @@ import org.sparky.sparkyai.jwt.dto.JwtAuthLoginDto;
 import org.sparky.sparkyai.jwt.dto.JwtAuthResponseDto;
 import org.sparky.sparkyai.user.domain.User;
 import org.sparky.sparkyai.user.domain.UserService;
+import org.sparky.sparkyai.user.dto.CreateUserDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,14 @@ public class AuthService {
         if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new UnauthorizedException("Invalid username or password");
         }
+
+        JwtAuthResponseDto response = new JwtAuthResponseDto();
+        response.setToken(jwtService.generateToken(user));
+        return response;
+    }
+
+    public JwtAuthResponseDto jwtRegisterSparkyAdmin(CreateUserDto userDto) {
+        User user = userService.createSparkyAdminUser(userDto);
 
         JwtAuthResponseDto response = new JwtAuthResponseDto();
         response.setToken(jwtService.generateToken(user));

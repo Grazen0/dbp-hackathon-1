@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.sparky.sparkyai.user.dto.CreateUserDto;
 import org.sparky.sparkyai.user.dto.UpdateUserDto;
+import org.sparky.sparkyai.user.dto.UserConsumptionDto;
 import org.sparky.sparkyai.common.exception.ResourceConflictException;
 import org.sparky.sparkyai.common.exception.ResourceNotFoundException;
 import org.sparky.sparkyai.company.domain.Company;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.sparky.sparkyai.user.infrastructure.UserRepository;
+import org.sparky.sparkyai.usercall.dto.UserCallResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,12 +53,21 @@ public class UserService {
 
         User user = modelMapper.map(userDto, User.class);
         user.setCompany(company);
+        user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
-    public User createUser(CreateUserDto userDto) {
+    public User createAdminUser(CreateUserDto userDto) {
         User user = modelMapper.map(userDto, User.class);
+        user.setRole(Role.COMPANY_ADMIN);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public User createSparkyAdminUser(CreateUserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        user.setRole(Role.SPARKY_ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -70,6 +81,18 @@ public class UserService {
             user.setUsername(userDto.getUsername());
         }
         return userRepository.save(user);
+    }
+
+    public UserConsumptionDto getUserConsumption(User user) {
+        List<UserCallResponseDto> calls = user.getCallHistory()
+                .stream()
+                .map(call -> modelMapper.map(call, UserCallResponseDto.class))
+                .toList();
+
+        UserConsumptionDto report = new UserConsumptionDto();
+        report.setCallHistory(calls);
+        report.setTotalCalls(calls.stream().map(call -> call.getConsumedTokens()).reduce(0L, Long::sum));
+        return report;
     }
 
 }

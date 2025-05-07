@@ -53,7 +53,7 @@ public class User implements UserDetails {
     private List<Limit> limits;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserCall> requestHistory;
+    private List<UserCall> callHistory;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
