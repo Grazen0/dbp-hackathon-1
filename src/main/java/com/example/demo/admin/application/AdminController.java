@@ -53,9 +53,9 @@ public class AdminController {
     }
 
     @PatchMapping("/companies/{id}/status")
-    public CompanyResponseDto changeCompanyStatus(@PathVariable Long id) {
+    public CompanyResponseDto changeCompanyStatus(@PathVariable Long id, @RequestParam Boolean enable) {
         Company company = companyService.getCompanyById(id);
-        Company updatedCompany = companyService.changeCompanyStatus(company);
+        Company updatedCompany = companyService.changeCompanyStatus(company, enable);
         return modelMapper.map(updatedCompany, CompanyResponseDto.class);
     }
 

@@ -34,7 +34,7 @@ public class CompanyService {
         Company company = modelMapper.map(dto.getCompany(), Company.class);
         User admin = userService.createUserWithoutSaving(dto.getMainAdmin(), company);
 
-        company.setMainAdmin(admin);
+        company.setAdmin(admin);
         return companyRepository.save(company);
     }
 
@@ -42,18 +42,16 @@ public class CompanyService {
         company.setName(updateDto.getName());
         company.setRuc(updateDto.getRuc());
 
-        if (company.getMainAdmin().getId() != updateDto.getMainAdminId()) {
+        if (company.getAdmin().getId() != updateDto.getMainAdminId()) {
             User newAdmin = userService.getUserById(updateDto.getMainAdminId());
-            company.setMainAdmin(newAdmin);
+            company.setAdmin(newAdmin);
         }
 
         return companyRepository.save(company);
     }
 
-    public Company changeCompanyStatus(Company company) {
-        company.setStatus(company.getStatus() == Status.ENABLED
-                ? Status.DISABLED
-                : Status.ENABLED);
+    public Company changeCompanyStatus(Company company, Boolean enable) {
+        company.setStatus(enable ? Status.ENABLED : Status.DISABLED);
         return companyRepository.save(company);
     }
 
