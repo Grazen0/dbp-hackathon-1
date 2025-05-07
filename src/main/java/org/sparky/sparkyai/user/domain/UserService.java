@@ -91,7 +91,7 @@ public class UserService {
 
         UserConsumptionDto report = new UserConsumptionDto();
         report.setCallHistory(calls);
-        report.setTotalCalls(calls.stream().map(call -> call.getConsumedTokens()).reduce(0L, Long::sum));
+        report.setTotalCalls(calls.stream().map(call -> call.getConsumedTokens()).reduce(0, Integer::sum));
         return report;
     }
 

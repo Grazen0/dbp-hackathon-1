@@ -1,5 +1,6 @@
 package org.sparky.sparkyai.user.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,10 +51,10 @@ public class User implements UserDetails {
     private Company ownedCompany;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Limit> limits;
+    private List<Limit> limits = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserCall> callHistory;
+    private List<UserCall> callHistory = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

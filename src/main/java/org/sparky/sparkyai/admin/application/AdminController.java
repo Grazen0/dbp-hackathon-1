@@ -36,8 +36,9 @@ public class AdminController {
 
     @PostMapping("/companies")
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createCompany(@Valid @RequestBody CreateCompanyWithAdminDto dto) {
-        return companyService.createCompanyWithAdmin(dto);
+    public CompanyResponseDto createCompany(@Valid @RequestBody CreateCompanyWithAdminDto dto) {
+        Company company = companyService.createCompanyWithAdmin(dto);
+        return modelMapper.map(company, CompanyResponseDto.class);
     }
 
     @GetMapping("/companies/{id}")
