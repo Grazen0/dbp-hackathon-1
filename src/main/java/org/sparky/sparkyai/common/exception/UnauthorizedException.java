@@ -10,7 +10,7 @@ public class UnauthorizedException extends ResponseStatusException {
     }
 
     public UnauthorizedException() {
-        super(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        this("Unauthorized");
     }
 
 }

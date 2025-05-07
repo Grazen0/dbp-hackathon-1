@@ -33,6 +33,11 @@ public class RestrictionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Restriction not found"));
     }
 
+    public Restriction getRestrictionByIdAndCompanyId(Long id, Long companyId) {
+        return restrictionRepository.findByIdAndCompanyId(id, companyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restriction not found"));
+    }
+
     public Restriction createRestriction(CreateRestrictionDto restrictionDto, Company company) {
         Restriction restriction = modelMapper.map(restrictionDto, Restriction.class);
         restriction.setCompany(company);

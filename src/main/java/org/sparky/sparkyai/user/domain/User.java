@@ -33,7 +33,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO: implement uniqueness check on create
     @Column(nullable = false, unique = true)
     private String username;
 

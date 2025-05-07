@@ -58,7 +58,8 @@ public class RestrictionController {
     public RestrictionResponseDto updateCompanyRestriction(@PathVariable Long id,
             @Valid @RequestBody UpdateRestrictionDto restrictionDto,
             Authentication authentication) {
-        Restriction restriction = restrictionService.getRestrictionById(id);
+        User admin = (User) authentication.getPrincipal();
+        Restriction restriction = restrictionService.getRestrictionByIdAndCompanyId(id, admin.getCompany().getId());
         Restriction updatedRestriction = restrictionService.updateRestriction(restriction, restrictionDto);
         return modelMapper.map(updatedRestriction, RestrictionResponseDto.class);
     }
@@ -66,7 +67,8 @@ public class RestrictionController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompanyRestriction(@PathVariable Long id, Authentication authentication) {
-        Restriction restriction = restrictionService.getRestrictionById(id);
+        User admin = (User) authentication.getPrincipal();
+        Restriction restriction = restrictionService.getRestrictionByIdAndCompanyId(id, admin.getCompany().getId());
         restrictionService.deleteRestriction(restriction);
     }
 }

@@ -1,9 +1,11 @@
 package org.sparky.sparkyai.user.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.sparky.sparkyai.user.dto.CreateUserDto;
 import org.sparky.sparkyai.user.dto.UpdateUserDto;
+import org.sparky.sparkyai.common.exception.ResourceConflictException;
 import org.sparky.sparkyai.common.exception.ResourceNotFoundException;
 import org.sparky.sparkyai.company.domain.Company;
 
@@ -43,20 +45,30 @@ public class UserService {
     }
 
     public User createUser(CreateUserDto userDto, Company company) {
-        User user = createUserWithoutSaving(userDto, company);
-        return userRepository.save(user);
-    }
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new ResourceConflictException("User with username already exists");
+        }
 
-    public User createUserWithoutSaving(CreateUserDto userDto, Company company) {
         User user = modelMapper.map(userDto, User.class);
         user.setCompany(company);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return user;
+        return userRepository.save(user);
+    }
+
+    public User createUser(CreateUserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     public User updateUser(User user, UpdateUserDto userDto) {
-        user.setUsername(userDto.getUsername());
-        user.setRole(userDto.getRole());
+        if (!Objects.equals(userDto.getUsername(), user.getUsername())) {
+            if (userRepository.existsByUsername(userDto.getUsername())) {
+                throw new ResourceConflictException("User with username already exists");
+            }
+
+            user.setUsername(userDto.getUsername());
+        }
         return userRepository.save(user);
     }
 

@@ -1,5 +1,6 @@
 package org.sparky.sparkyai.user.infrastructure;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -130,12 +131,31 @@ public class UserRepositoryTest extends ContainerTestBase {
     }
 
     @Test
-    void testFindByCompanyId() {
+    public void testFindByCompanyId() {
         List<User> result1 = userRepository.findByCompanyId(company1.getId());
         List<User> result2 = userRepository.findByCompanyId(company2.getId());
 
         assertEquals(result1.size(), 2);
         assertEquals(result2.size(), 1);
+    }
+
+    @Test
+    public void testExistsByUsername() {
+        boolean result1 = userRepository.existsByUsername(admin1.getUsername());
+        boolean result2 = userRepository.existsByUsername(admin2.getUsername());
+        boolean result3 = userRepository.existsByUsername(user1.getUsername());
+        boolean result4 = userRepository.existsByUsername(user2.getUsername());
+        boolean result5 = userRepository.existsByUsername(user3.getUsername());
+        boolean result6 = userRepository.existsByUsername("");
+        boolean result7 = userRepository.existsByUsername("carlos");
+
+        assertTrue(result1);
+        assertTrue(result2);
+        assertTrue(result3);
+        assertTrue(result4);
+        assertTrue(result5);
+        assertFalse(result6);
+        assertFalse(result7);
     }
 
 }

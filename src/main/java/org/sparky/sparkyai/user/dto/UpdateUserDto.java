@@ -1,7 +1,5 @@
 package org.sparky.sparkyai.user.dto;
 
-import org.sparky.sparkyai.user.domain.Role;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,6 +11,4 @@ public class UpdateUserDto {
     @NotBlank
     private String username;
 
-    @NotNull
-    private Role role;
 }

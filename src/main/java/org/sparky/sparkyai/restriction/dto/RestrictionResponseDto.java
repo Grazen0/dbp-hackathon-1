@@ -4,4 +4,7 @@ import lombok.Data;
 
 @Data
 public class RestrictionResponseDto {
+
+    private Long id;
+
 }

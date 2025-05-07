@@ -32,7 +32,7 @@ public class CompanyService {
 
     public Company createCompanyWithAdmin(CreateCompanyWithAdminDto dto) {
         Company company = modelMapper.map(dto.getCompany(), Company.class);
-        User admin = userService.createUserWithoutSaving(dto.getMainAdmin(), company);
+        User admin = userService.createUser(dto.getAdmin());
 
         company.setAdmin(admin);
         return companyRepository.save(company);

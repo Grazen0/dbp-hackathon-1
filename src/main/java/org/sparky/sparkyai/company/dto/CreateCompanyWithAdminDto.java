@@ -15,5 +15,6 @@ public class CreateCompanyWithAdminDto {
 
     @NotNull
     @Valid
-    CreateUserDto mainAdmin;
+    CreateUserDto admin;
+
 }

@@ -10,7 +10,7 @@ public class ResourceNotFoundException extends ResponseStatusException {
     }
 
     public ResourceNotFoundException() {
-        super(HttpStatus.NOT_FOUND, "Not found");
+        this("Not found");
     }
 
 }
