@@ -44,7 +44,7 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
 
