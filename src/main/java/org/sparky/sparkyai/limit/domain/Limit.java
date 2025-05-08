@@ -39,4 +39,7 @@ public class Limit {
     @Column(nullable = false)
     private Duration timeWindow;
 
+    @Column(nullable = false)
+    private Duration duration;
+
 }

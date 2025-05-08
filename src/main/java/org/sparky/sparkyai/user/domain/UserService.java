@@ -1,5 +1,6 @@
 package org.sparky.sparkyai.user.domain;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -107,8 +108,14 @@ public class UserService {
 
         UserConsumptionDto report = new UserConsumptionDto();
         report.setCallHistory(calls);
-        report.setTotalCalls(calls.stream().map(call -> call.getConsumedTokens()).reduce(0, Integer::sum));
+        report.setTotalCalls(calls.size());
+        report.setTotalConsumedTokens(calls.stream().map(call -> call.getConsumedTokens()).reduce(0, Integer::sum));
         return report;
+    }
+
+    public User limitUser(User user, ZonedDateTime until) {
+        user.setLimitedUntil(until);
+        return userRepository.save(user);
     }
 
 }
