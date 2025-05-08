@@ -27,7 +27,7 @@ public class AiController {
     }
 
     @PostMapping("/multimodal")
-    public ResponseEntity<String> multimodalAi(@RequestParam(defaultValue = "meta/Llama-4-Scout-17B-16E-Instruct") String model, @RequestBody String message) {
+    public ResponseEntity<String> multimodalAi(@RequestParam(defaultValue = "openai/gpt-4.1") String model, @RequestBody String message) {
         return aiService.chatRequest(model, message);
     }
 
