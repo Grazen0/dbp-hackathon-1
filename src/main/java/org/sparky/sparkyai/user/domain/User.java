@@ -44,17 +44,17 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = true)
     private Company company;
 
-    @OneToOne(mappedBy = "admin", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
     private Company ownedCompany;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Limit> limits = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserCall> callHistory = new ArrayList<>();
 
     @Column(nullable = true)

@@ -9,6 +9,7 @@ public class UserCallResponseDto {
 
     private String prompt;
     private String response;
+    private Boolean wasError;
     private Integer consumedTokens;
     private ZonedDateTime createdAt;
 

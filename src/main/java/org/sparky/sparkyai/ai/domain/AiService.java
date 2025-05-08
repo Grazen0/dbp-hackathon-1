@@ -5,7 +5,6 @@ import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.List;
 @Service
 public class AiService {
 
-    @Value("${GITHUB_TOKEN}")
+    @Value("${github.token}")
     private String github_token;
 
     private String getResponse(String model, ChatCompletionsOptions request) {
@@ -34,31 +33,27 @@ public class AiService {
         return completions.getChoices().getFirst().getMessage().getContent();
     }
 
-    public ResponseEntity<String> chatRequest(String model, String requestText) {
+    public String chatRequest(String model, String requestText) {
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-                Collections.singletonList(new ChatRequestUserMessage(requestText))
-        );
+                Collections.singletonList(new ChatRequestUserMessage(requestText)));
 
-        String response = getResponse(model, chatCompletionsOptions);
-
-        return ResponseEntity.ok(response);
+        return getResponse(model, chatCompletionsOptions);
 
     }
 
-    public ResponseEntity<String> completionRequest(String model, String requestText) {
-
+    public String completionRequest(String model, String requestText) {
         List<ChatRequestMessage> chatMessages = Arrays.asList(
-                new ChatRequestSystemMessage("Help me complete the text fragment that I will send in the next message. In your response, send me only the original text plus the completed text, with no additional comments. Do not respond to this message."),
-                new ChatRequestUserMessage(requestText)
-        );
+                new ChatRequestSystemMessage(
+                        "Help me complete the text fragment that I will send in the next message. In your response, send me only the original text plus the completed text, with no additional comments. Do not respond to this message."),
+                new ChatRequestUserMessage(requestText));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+        return getResponse(model, chatCompletionsOptions);
+    }
 
-        String response = getResponse(model, chatCompletionsOptions);
-
-        return ResponseEntity.ok(response);
-
+    public int tokenCount(String message) {
+        return message.trim().split("\\W+").length;
     }
 
 }
