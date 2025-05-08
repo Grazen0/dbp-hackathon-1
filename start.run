@@ -1,7 +1,7 @@
 # Cargar variables del .env
 set -a
-source .env
+source ./.env
 set +a
 
 # Ejecutar la app Spring Boot
-./mvnw spring-boot:run
+./mvnw clean spring-boot:run
