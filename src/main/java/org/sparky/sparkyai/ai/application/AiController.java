@@ -18,17 +18,17 @@ public class AiController {
 
     @PostMapping("/chat")
     public ResponseEntity<String> chatAi(@RequestParam(defaultValue = "meta/Llama-4-Scout-17B-16E-Instruct") String model, @RequestBody String message) {
-        return aiService.createRequest(model, message);
+        return aiService.chatRequest(model, message);
     }
 
     @PostMapping("/completion")
     public ResponseEntity<String> completionAi(@RequestParam(defaultValue = "meta/Llama-4-Scout-17B-16E-Instruct") String model, @RequestBody String message) {
-        return aiService.createRequest(model, message);
+        return aiService.completionRequest(model, message);
     }
 
     @PostMapping("/multimodal")
     public ResponseEntity<String> multimodalAi(@RequestParam(defaultValue = "meta/Llama-4-Scout-17B-16E-Instruct") String model, @RequestBody String message) {
-        return aiService.createRequest(model, message);
+        return aiService.chatRequest(model, message);
     }
 
 }
