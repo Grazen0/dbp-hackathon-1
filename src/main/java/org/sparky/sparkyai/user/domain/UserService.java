@@ -15,12 +15,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 import org.sparky.sparkyai.user.infrastructure.UserRepository;
 import org.sparky.sparkyai.usercall.dto.UserCallResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
 

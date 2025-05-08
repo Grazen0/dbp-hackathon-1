@@ -37,10 +37,10 @@ public class RestrictionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestrictionResponseDto addCompanyRestriction(@Valid @RequestBody CreateRestrictionDto restrictionDto,
+    public RestrictionResponseDto createCompanyRestriction(@Valid @RequestBody CreateRestrictionDto restrictionDto,
             Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        Restriction restriction = restrictionService.createRestriction(restrictionDto, admin.getCompany());
+        Restriction restriction = restrictionService.createRestriction(restrictionDto, admin.getOwnedCompany());
         return modelMapper.map(restriction, RestrictionResponseDto.class);
     }
 
@@ -48,7 +48,7 @@ public class RestrictionController {
     public List<RestrictionResponseDto> getCompanyRestrictions(Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
         List<Restriction> restrictions = restrictionService
-                .getRestrictionsByCompanyId(admin.getCompany().getId());
+                .getRestrictionsByCompanyId(admin.getOwnedCompany().getId());
         return restrictions.stream()
                 .map(restriction -> modelMapper.map(restriction, RestrictionResponseDto.class))
                 .toList();
@@ -59,7 +59,8 @@ public class RestrictionController {
             @Valid @RequestBody UpdateRestrictionDto restrictionDto,
             Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        Restriction restriction = restrictionService.getRestrictionByIdAndCompanyId(id, admin.getCompany().getId());
+        Restriction restriction = restrictionService.getRestrictionByIdAndCompanyId(id,
+                admin.getOwnedCompany().getId());
         Restriction updatedRestriction = restrictionService.updateRestriction(restriction, restrictionDto);
         return modelMapper.map(updatedRestriction, RestrictionResponseDto.class);
     }
@@ -68,7 +69,8 @@ public class RestrictionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompanyRestriction(@PathVariable Long id, Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        Restriction restriction = restrictionService.getRestrictionByIdAndCompanyId(id, admin.getCompany().getId());
+        Restriction restriction = restrictionService.getRestrictionByIdAndCompanyId(id,
+                admin.getOwnedCompany().getId());
         restrictionService.deleteRestriction(restriction);
     }
 }

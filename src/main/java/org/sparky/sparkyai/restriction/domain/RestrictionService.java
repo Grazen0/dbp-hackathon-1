@@ -5,6 +5,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 import org.sparky.sparkyai.common.exception.ResourceNotFoundException;
 import org.sparky.sparkyai.company.domain.Company;
 import org.sparky.sparkyai.restriction.dto.CreateRestrictionDto;
@@ -14,6 +16,7 @@ import org.sparky.sparkyai.restriction.infrastructure.RestrictionRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RestrictionService {
 

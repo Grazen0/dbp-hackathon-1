@@ -1,5 +1,6 @@
 package org.sparky.sparkyai.user.domain;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,18 +44,21 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     private Company company;
 
-    @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "admin", fetch = FetchType.EAGER)
     private Company ownedCompany;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Limit> limits = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserCall> callHistory = new ArrayList<>();
+
+    @Column(nullable = true)
+    private ZonedDateTime limitedUntil;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

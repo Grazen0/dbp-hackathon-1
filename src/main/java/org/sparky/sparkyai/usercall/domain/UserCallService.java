@@ -5,9 +5,11 @@ import java.util.List;
 import org.sparky.sparkyai.usercall.infrastructure.UserCallRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserCallService {
 

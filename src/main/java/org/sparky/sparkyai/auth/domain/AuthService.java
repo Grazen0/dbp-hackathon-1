@@ -3,6 +3,8 @@ package org.sparky.sparkyai.auth.domain;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 import org.sparky.sparkyai.common.exception.UnauthorizedException;
 import org.sparky.sparkyai.jwt.domain.JwtService;
 import org.sparky.sparkyai.jwt.dto.JwtAuthLoginDto;
@@ -14,6 +16,7 @@ import org.sparky.sparkyai.user.dto.CreateUserDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 

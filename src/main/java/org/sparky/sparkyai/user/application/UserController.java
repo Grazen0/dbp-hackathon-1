@@ -25,7 +25,6 @@ import org.sparky.sparkyai.user.dto.CreateUserDto;
 import org.sparky.sparkyai.user.dto.UpdateUserDto;
 import org.sparky.sparkyai.user.dto.UserConsumptionDto;
 import org.sparky.sparkyai.user.dto.UserResponseDto;
-import org.sparky.sparkyai.usercall.dto.UserCallResponseDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,14 +44,14 @@ public class UserController {
     public UserResponseDto createCompanyUser(@Valid @RequestBody CreateUserDto userDto,
             Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        User createdUser = userService.createUser(userDto, admin.getCompany());
+        User createdUser = userService.createUser(userDto, admin.getOwnedCompany());
         return modelMapper.map(createdUser, UserResponseDto.class);
     }
 
     @GetMapping
     public List<UserResponseDto> getAllCompanyUsers(Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        List<User> users = userService.getUsersByCompanyId(admin.getCompany().getId());
+        List<User> users = userService.getUsersByCompanyId(admin.getOwnedCompany().getId());
         return users.stream()
                 .map(user -> modelMapper.map(user, UserResponseDto.class))
                 .toList();
@@ -61,7 +60,7 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponseDto getCompanyUser(@PathVariable Long id, Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        User user = userService.getUserByIdAndCompanyId(id, admin.getCompany().getId());
+        User user = userService.getUserByIdAndCompanyId(id, admin.getOwnedCompany().getId());
         return modelMapper.map(user, UserResponseDto.class);
     }
 
@@ -69,7 +68,7 @@ public class UserController {
     public UserResponseDto updateCompanyUser(@PathVariable Long id, @Valid @RequestBody UpdateUserDto userDto,
             Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        User user = userService.getUserByIdAndCompanyId(id, admin.getCompany().getId());
+        User user = userService.getUserByIdAndCompanyId(id, admin.getOwnedCompany().getId());
         User updatedUser = userService.updateUser(user, userDto);
         return modelMapper.map(updatedUser, UserResponseDto.class);
     }
@@ -78,7 +77,7 @@ public class UserController {
     public LimitResponseDto createLimit(@PathVariable Long id, @Valid @RequestBody CreateLimitDto limitDto,
             Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        User user = userService.getUserByIdAndCompanyId(id, admin.getCompany().getId());
+        User user = userService.getUserByIdAndCompanyId(id, admin.getOwnedCompany().getId());
         Limit limit = limitService.createUserLimit(user, limitDto);
         return modelMapper.map(limit, LimitResponseDto.class);
     }
@@ -86,7 +85,7 @@ public class UserController {
     @GetMapping("/{id}/consumption")
     public UserConsumptionDto getUserConsumption(@PathVariable Long id, Authentication authentication) {
         User admin = (User) authentication.getPrincipal();
-        User user = userService.getUserByIdAndCompanyId(id, admin.getCompany().getId());
+        User user = userService.getUserByIdAndCompanyId(id, admin.getOwnedCompany().getId());
         return userService.getUserConsumption(user);
     }
 

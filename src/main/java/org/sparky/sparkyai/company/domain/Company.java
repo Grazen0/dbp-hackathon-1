@@ -37,18 +37,18 @@ public class Company {
     @Column(nullable = false, unique = true)
     private String ruc;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private User admin;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Restriction> restrictions = new ArrayList<>();
 
     @CreationTimestamp
