@@ -1,5 +1,8 @@
 # Hackathon #1: Sparky AI System
 
+> [!CAUTION]
+> Aunque hay algunos integration tests (tests de los controllers), no logramos hacerlos correr en primer lugar por problemas con los testscontainers.
+
 ## Descripción General
 
 Sparky Consulting, una empresa líder en soluciones de software, se enfrenta a un desafío creciente. Sus clientes
@@ -44,12 +47,12 @@ El sistema debe modelar las siguientes relaciones sin comprometer las mejores pr
 
 1. **Sparky** mantiene relaciones con múltiples **Empresas**.
 2. Cada **Empresa** tiene:
-    - Un **Administrador** principal.
-    - Múltiples **Usuarios**.
-    - Varias **Restricciones** a nivel de empresa.
+   - Un **Administrador** principal.
+   - Múltiples **Usuarios**.
+   - Varias **Restricciones** a nivel de empresa.
 3. Cada **Usuario** tiene:
-    - Múltiples **Límites** específicos basados en las restricciones de la empresa.
-    - Un historial de **Solicitudes** a modelos de IA.
+   - Múltiples **Límites** específicos basados en las restricciones de la empresa.
+   - Un historial de **Solicitudes** a modelos de IA.
 4. Cada **Solicitud** registra información sobre la consulta, respuesta y consumo de recursos.
 
 Las entidades deben considerar al menos los siguientes aspectos:
@@ -66,7 +69,7 @@ Las entidades deben considerar al menos los siguientes aspectos:
 Endpoints para que el Super Admin de Sparky pueda:
 
 | Método | Endpoint                                | Descripción                                                                      |
-|--------|-----------------------------------------|----------------------------------------------------------------------------------|
+| ------ | --------------------------------------- | -------------------------------------------------------------------------------- |
 | POST   | `/api/admin/companies`                  | Crear nueva empresa cliente con su administrador                                 |
 | GET    | `/api/admin/companies`                  | Listar todas las empresas registradas                                            |
 | GET    | `/api/admin/companies/{id}`             | Obtener información detallada de una empresa                                     |
@@ -79,7 +82,7 @@ Endpoints para que el Super Admin de Sparky pueda:
 Endpoints para administradores de empresas:
 
 | Método | Endpoint                         | Descripción                                       |
-|--------|----------------------------------|---------------------------------------------------|
+| ------ | -------------------------------- | ------------------------------------------------- |
 | POST   | `/api/company/restrictions`      | Crear nueva restricción de modelo para la empresa |
 | GET    | `/api/company/restrictions`      | Listar todas las restricciones de la empresa      |
 | PUT    | `/api/company/restrictions/{id}` | Actualizar una restricción existente              |
@@ -90,7 +93,7 @@ Endpoints para administradores de empresas:
 Endpoints para administradores de empresas:
 
 | Método | Endpoint                              | Descripción                                 |
-|--------|---------------------------------------|---------------------------------------------|
+| ------ | ------------------------------------- | ------------------------------------------- |
 | POST   | `/api/company/users`                  | Crear nuevo usuario para la empresa         |
 | GET    | `/api/company/users`                  | Listar todos los usuarios de la empresa     |
 | GET    | `/api/company/users/{id}`             | Obtener información detallada de un usuario |
@@ -103,7 +106,7 @@ Endpoints para administradores de empresas:
 Endpoints para usuarios finales:
 
 | Método | Endpoint             | Descripción                                               |
-|--------|----------------------|-----------------------------------------------------------|
+| ------ | -------------------- | --------------------------------------------------------- |
 | POST   | `/api/ai/chat`       | Realizar una consulta a un modelo de chat                 |
 | POST   | `/api/ai/completion` | Realizar una solicitud de completado de texto             |
 | POST   | `/api/ai/multimodal` | Realizar una consulta a un modelo multimodal (con imagen) |
@@ -132,8 +135,8 @@ Utilizar el SDK de GitHub Models para Java. El sistema debe soportar al menos:
 
 - Implementar limites como "rolling window" (se reinician periódicamente).
 - Soportar diferentes tipos de límites:
-    - Número de solicitudes por ventana de tiempo.
-    - Tokens consumidos por ventana de tiempo.
+  - Número de solicitudes por ventana de tiempo.
+  - Tokens consumidos por ventana de tiempo.
 - Rechazar solicitudes que excedan límites e informar de manera apropiada.
 
 ## Registro de Solicitudes
